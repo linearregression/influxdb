@@ -124,6 +124,7 @@ type TSDBStore struct {
 	DeleteDatabaseFn                func(name string) error
 	DeleteMeasurementFn             func(database, name string) error
 	DeleteRetentionPolicyFn         func(database, name string) error
+	DeleteShardFn                   func(id uint64) error
 	DeleteSeriesFn                  func(database string, sources []influxql.Source, condition influxql.Expr) error
 	ExecuteShowFieldKeysStatementFn func(stmt *influxql.ShowFieldKeysStatement, database string) (models.Rows, error)
 	ExecuteShowSeriesStatementFn    func(stmt *influxql.ShowSeriesStatement, database string) (models.Rows, error)
@@ -153,6 +154,10 @@ func (s *TSDBStore) DeleteMeasurement(database, name string) error {
 
 func (s *TSDBStore) DeleteRetentionPolicy(database, name string) error {
 	return s.DeleteRetentionPolicyFn(database, name)
+}
+
+func (s *TSDBStore) DeleteShard(id uint64) error {
+	return s.DeleteShardFn(id)
 }
 
 func (s *TSDBStore) DeleteSeries(database string, sources []influxql.Source, condition influxql.Expr) error {
